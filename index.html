@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>اختبار الإرشاد الأسري المتقدم | تصميم زجاجي وحديث</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Cairo', 'Almarai', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at 10% 30%, rgba(188, 156, 255, 0.2), rgba(80, 60, 130, 0.1)), 
+                        linear-gradient(135deg, #eef2ff 0%, #dedcff 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* glass container effect */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* header glass */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 80px;
+            padding: 1rem 2rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(120deg, #2e1b5e, #7b3da3, #c084fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            text-shadow: none;
+        }
+
+        .hero p {
+            color: #2d2a4a;
+            font-weight: 600;
+            background: rgba(255,255,245,0.5);
+            display: inline-block;
+            padding: 0.3rem 1.5rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(4px);
+        }
+
+        /* glass card for each question */
+        .question-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
+            border-radius: 40px;
+            margin-bottom: 2rem;
+            padding: 1.6rem 1.8rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .question-card:hover {
+            transform: translateY(-6px);
+            background: rgba(255, 255, 255, 0.55);
+            box-shadow: 0 28px 40px -16px rgba(60, 30, 100, 0.3);
+            border-color: rgba(210, 180, 255, 0.8);
+        }
+
+        .q-number {
+            display: inline-block;
+            background: rgba(98, 57, 148, 0.85);
+            backdrop-filter: blur(4px);
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f1b3c;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            border-right: 4px solid #b77eff;
+            padding-right: 1rem;
+        }
+
+        /* options grid / flex */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            background: rgba(250, 248, 255, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 0.7rem 1.2rem;
+            border-radius: 28px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid rgba(200, 180, 250, 0.5);
+        }
+
+        .option:hover {
+            background: rgba(235, 225, 255, 0.9);
+            border-color: #b48ef0;
+            transform: scale(1.01);
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #7c5eb0;
+            border-radius: 50%;
+            margin-top: 0;
+            position: relative;
+            cursor: pointer;
+            background: white;
+            transition: 0.1s;
+        }
+
+        input[type="radio"]:checked {
+            border-color: #6c38b0;
+            background-color: #8b5cf6;
+            box-shadow: inset 0 0 0 3px white;
+        }
+
+        .option label {
+            flex: 1;
+            font-size: 0.98rem;
+            font-weight: 500;
+            color: #2a2349;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        /* modern check button under each question */
+        .check-btn-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.8rem;
+        }
+
+        .check-btn {
+            background: rgba(110, 70, 170, 0.75);
+            backdrop-filter: blur(8px);
+            border: none;
+            padding: 0.45rem 1.3rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255,255,240,0.5);
+        }
+
+        .check-btn:hover {
+            background: #8b5cf6;
+            transform: scale(1.02);
+            box-shadow: 0 6px 14px rgba(98, 54, 163, 0.3);
+        }
+
+        .check-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* individual feedback inside question card */
+        .indicator-feedback {
+            margin-top: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: rgba(245, 240, 255, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-right: 3px solid;
+            transition: 0.2s;
+        }
+
+        .correct-feedback {
+            border-right-color: #2b9348;
+            color: #1c6e3c;
+            background: rgba(200, 230, 210, 0.5);
+        }
+
+        .wrong-feedback {
+            border-right-color: #d62828;
+            color: #a12222;
+            background: rgba(255, 220, 220, 0.5);
+        }
+
+        .neutral-feedback {
+            border-right-color: #b57bee;
+            color: #4a3a72;
+        }
+
+        /* submit area */
+        .submit-area {
+            text-align: center;
+            margin: 2rem 0 2rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(95deg, #593c9e, #9a6ad0);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 12px 28px rgba(89, 60, 158, 0.5);
+            font-family: inherit;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255,255,200,0.5);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+            background: linear-gradient(95deg, #714bb9, #b37beb);
+            box-shadow: 0 18px 30px rgba(89, 60, 158, 0.6);
+        }
+
+        /* result panel glass */
+        .result-panel {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            padding: 1.6rem 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid rgba(255,255,245,0.7);
+        }
+
+        .score {
+            font-size: 2.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #301d72, #a876e0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .feedback {
+            margin-top: 0.7rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #30285c;
+        }
+
+        hr {
+            margin: 1rem 0;
+            border: none;
+            height: 1px;
+            background: rgba(128, 90, 190, 0.3);
+        }
+
+        #detailedResults {
+            text-align: right;
+            font-size: 0.85rem;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #5e4d87;
+            font-weight: 500;
+        }
+
+        @media (max-width: 680px) {
+            .question-card {
+                padding: 1.2rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .option label {
+                font-size: 0.85rem;
+            }
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .check-btn {
+                padding: 0.35rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1>إرشاد أسري  الشابتر الأول</h1>
+    </div>
+
+    <form id="quizForm">
+        <!-- سيتم إنشاء الأسئلة 1-30 باستخدام جافاسكريبت لتجنب التكرار اليدوي -->
+    </form>
+
+    <div class="submit-area">
+        <button type="button" class="submit-btn" id="submitQuiz">✨ تصحيح شامل ✨</button>
+    </div>
+
+    <div id="resultContainer" class="result-panel" style="display: none;">
+        <div class="score" id="scoreDisplay">0/30</div>
+        <div class="feedback" id="feedbackMsg"></div>
+        <hr>
+        <div id="detailedResults"></div>
+    </div>
+
+</div>
+
+<script>
+    // مصحح الإجابات الصحيح (30 سؤالاً)
+    const correctAnswers = {
+        q1: 'B', q2: 'B', q3: 'B', q4: 'C', q5: 'C', q6: 'D', q7: 'B', q8: 'B', q9: 'B', q10: 'B',
+        q11: 'C', q12: 'B', q13: 'B', q14: 'B', q15: 'B', q16: 'B', q17: 'C', q18: 'B', q19: 'B', q20: 'B',
+        q21: 'B', q22: 'B', q23: 'B', q24: 'B', q25: 'C', q26: 'B', q27: 'B', q28: 'B', q29: 'C', q30: 'D'
+    };
+
+    // بيانات الأسئلة (نصوص وخيارات)
+    const questionsData = [
+        { text: "يرى باترسون (1973) أن جوهر عملية الإرشاد النفسي ليس مجرد إعطاء معلومات أو نصح، بل هو:", options: ["أ) توجيه المسترشد نحو الحلول الجاهزة بناءً على خبرة المرشد", "ب) توفير الظروف التي تُسهل التغيير الاختياري للسلوك من جانب المسترشد", "ج) إعادة هيكلة شخصية المسترشد وفقاً للمعايير الاجتماعية السائدة", "د) إصدار أوامر غير مباشرة تُغير من سلوك المسترشد دون وعيه"] },
+        { text: "أي من التعريفات التالية يركز بشكل أساسي على وصف المفهوم (وليس الإجراءات أو العلاقة)؟", options: ["أ) تعريف كرمبولتز (1965)", "ب) تعريف جود (1945)", "ج) تعريف روجرز (1952)", "د) تعريف تولبيرت (1959)"] },
+        { text: "بحسب ما ورد عن تيلر (1969)، فإن الغرض من الإرشاد هو:", options: ["أ) علاج الأمراض النفسية الشديدة فقط", "ب) تسهيل الاختيارات التي تساعد على نمو الشخص، وهو ذو طبيعة نمائية وعلاجية معاً", "ج) تقديم حلول فورية للمشكلات الحادة دون الاهتمام بالنمو طويل المدى", "د) قصر الخدمة الإرشادية على مرحلة الطفولة فقط"] },
+        { text: "أي الخصائص التي ذكرها كريستياني وجورج لمهن المساعدة تؤكد على أن التغيير ممكن بناءً على مبدأ سببية السلوك؟", options: ["أ) الاعتماد على العلاقة المهنية كوسيلة أساسية", "ب) السعي لمساعدة الأفراد ليصبحوا أكثر فاعلية", "ج) افتراض أن السلوك له سبب وأنه من الممكن تعديله", "د) الاستناد إلى النظريات المستمدة من فروع علم النفس"] },
+        { text: "الفرق الجوهري بين 'التوجيه' و'الإرشاد' من حيث طبيعة الخدمة (زهران 2005) هو:", options: ["أ) التوجيه يسبق الإرشاد زمنياً", "ب) التوجيه عمل جماعي بينما الإرشاد قد يكون فردياً", "ج) الإرشاد وسيلة وقائية وعلاجية، بينما التوجيه يميل ليكون إعلامياً وتوعوياً", "د) التوجيه يحتاج تخصصاً أعلى من الإرشاد"] },
+        { text: "العلاقة بين الإرشاد النفسي وعلم النفس الاجتماعي تتمثل في أنه:", options: ["أ) يساعد في فهم قوانين التعلم لأن الإرشاد عملية تعلم", "ب) يفهم المرشد من خلاله دوافع السلوك المنحرف في مؤسسات الأحداث", "ج) يوفر الإطار النظري لفهم شخصية العميل", "د) يُستخدم لفهم السلوك ضمن الجماعة، ويفيد خاصة في الإرشاد الجماعي"] },
+        { text: "أي من مناهج الإرشاد النفسي يُعرف بـ 'التحصين النفسي' ويركز على الأصحاء قبل حدوث المشكلة؟", options: ["أ) المنهج النمائي (الإنشائي)", "ب) المنهج الوقائي", "ج) المنهج العلاجي", "د) المنهج التكاملي"] },
+        { text: "أي من الحالات تتفق مع تعريف 'الإرشاد النفسي' من حيث الفئة المستهدفة؟", options: ["أ) مريض ذهاني حاد يحتاج دخولاً مستشفوياً", "ب) شخص عادي يواجه مشكلة حياتية يعجز عن حلها بمفرده", "ج) طفل مصاب بتوحد شديد لا يستجيب للتواصل", "د) شخص تحت تأثير المخدرات بشكل دائم"] },
+        { text: "من بين تعريفات الإرشاد النفسي، أيها يركز على أنه 'علاقة دينامية وهادفة بين شخصين تتنوع فيها الأساليب، مع التركيز على مساعدة المسترشد في فهم ذاته'؟", options: ["أ) روجرز (1952)", "ب) رين (1951)", "ج) بوركس وستيفلر (1979)", "د) كرمبولتز (1965)"] },
+        { text: "أي من الآتي ليس من ضمن النقاط المشتركة في تعريفات الإرشاد النفسي؟", options: ["أ) عملية بناءة ومخططة تتضمن خطوات تعليمية", "ب) تقديم حلول إجبارية للمسترشد لضمان نجاح العملية", "ج) تقدم للأشخاص الأسوياء وليست للحالات المرضية الشديدة", "د) تهتم بنقل ما يتعلمه المسترشد إلى مواقف حياته المستقبلية"] },
+        { text: "أي من العلوم الإنسانية يُعتبر 'ركيزة أساسية للإرشاد الأسري' لدراسة تأثير الطبقات الاجتماعية؟", options: ["أ) علم الاقتصاد", "ب) علم الإنسان (الأنثروبولوجيا)", "ج) علم الاجتماع", "د) علم الإحصاء"] },
+        { text: "أحد الأسباب الداعية للحاجة للإرشاد النفسي نتيجة 'للتغير الاجتماعي السريع' هو:", options: ["أ) ارتفاع معدل الإصابة بالأمراض النفسية كالقلق", "ب) ظهور صراع فكري وثقافي بين الأجيال", "ج) تنوع مصادر التعلم مثل التعلم الذاتي", "د) الفترات الانتقالية كالزواج أو التقاعد"] },
+        { text: "مرشد يعمل في 'مؤسسات الأحداث' لفهم دوافع السلوك المنحرف، فإنه يعتمد بشكل أساسي على فرع علم النفس:", options: ["أ) التربوي", "ب) الجنائي", "ج) الاجتماعي", "د) القياس النفسي"] },
+        { text: "من عرّف الإرشاد بأنه 'علاقة مهنية شخص لشخص بين مرشد مدرب ومسترشد، لاستجلاء نظرتهم للحياة وتحقيق أهدافهم المحددة ذاتياً'؟", options: ["أ) تولبيرت (1959)", "ب) بوركس وستيفلر (1979)", "ج) جوستاد (1953)", "د) بيتروفيسا وزملاؤه (1978)"] },
+        { text: "أي العبارات تعكس بدقة مفهوم 'المرونة' كخاصية من خصائص الإرشاد النفسي؟", options: ["أ) الإرشاد يقتصر على الجلسات الفردية فقط لضمان السرية", "ب) يمكن تقديم الخدمة لأفراد أو جماعات، وبطريقة مباشرة أو غير مباشرة", "ج) الإرشاد عملية جامدة تتبع خطوات ثابتة لا تحتمل التغيير", "د) المرونة تعني تغيير أهداف الإرشاد حسب رغبة المرشد فقط"] },
+        { text: "من أي نوع من الوقاية يندرج 'الكشف المبكر عن المشكلات النفسية'؟", options: ["أ) وقاية أولية (منع حدوث المشكلة)", "ب) وقاية ثانوية", "ج) وقاية من الدرجة الثالثة (تقليل الأثر)", "د) وقاية نمائية"] },
+        { text: "'التوجيه يسبق عملية الإرشاد ويمهد لها' هذا الفرق يُصنف ضمن أي محور من محاور زهران؟", options: ["أ) الشمولية", "ب) الجانب النظري والعملي", "ج) التسلسل الزمني", "د) درجة التخصص"] },
+        { text: "أي الأهداف يركز على 'إحداث توازن بين الفرد وبيئته لتلبية احتياجاته'؟", options: ["أ) تحقيق الذات", "ب) تحقيق التوافق (شخصي، تربوي، مهني، اجتماعي)", "ج) تحقيق الصحة النفسية", "د) تحسين العملية التربوية"] },
+        { text: "'اللجوء للمختصين الأقدر عند وجود شكوك أخلاقية معقدة' يُصنف ضمن:", options: ["أ) السرية", "ب) حل القضايا الأخلاقية", "ج) الاستشارة المهنية", "د) المسؤوليات المهنية"] },
+        { text: "أي تعريف يتفق مع 'المنهج النمائي (الإنشائي)' في الإرشاد؟", options: ["أ) يُقدم للمضطربين نفسياً لإعادة تأهيلهم", "ب) يُقدم للأشخاص العاديين لزيادة كفاءتهم ودعم نموهم عبر المراحل العمرية", "ج) يركز على الوقاية من الدرجة الثالثة فقط", "د) يعتمد على تقديم الأدوية النفسية كأساس للعلاج"] },
+        { text: "المنهج العلاجي 'الأكثر تكلفة في الوقت والجهد والمال' لأن:", options: ["أ) يُقدم لعدد كبير من الأشخاص الأسوياء", "ب) يتعامل مع مشكلات واضطرابات قائمة تتطلب إعادة بناء وظيفية", "ج) لا يحتاج إلى تدريب متخصص", "د) يركز فقط على الجانب التوعوي الإعلامي"] },
+        { text: "أي الباحثين ركز في تعريفه على 'الإجراءات والأنشطة ذات الأساس الأخلاقي' لمساعدة المسترشد على الانغماس في سلوكيات تؤدي لحل مشكلته؟", options: ["أ) تايلر (1969)", "ب) كرمبولتز (1965)", "ج) روجرز (1952)", "د) جود (1945)"] },
+        { text: "علم الاقتصاد يفيد الإرشاد النفسي في:", options: ["أ) تحليل التفاعلات العائلية", "ب) توجيه الفرد لمهن تتناسب مع سوق العمل والتكنولوجيا", "ج) تفسير الأحلام واللاوعي", "د) القياسات الفسيولوجية للقلق"] },
+        { text: "اتفق كل من بوركس وستيفلر (1979) مع تولبيرت (1959) على أن الإرشاد هو:", options: ["أ) عملية جماعية في المقام الأول", "ب) علاقة مهنية شخص لشخص بين مرشد مدرب ومسترشد", "ج) الغرض منه إعطاء المعلومات فقط", "د) مقتصر على الحالات المرضية الشديدة"] },
+        { text: "أي الخيارات ليس من أهداف الإرشاد النفسي المذكورة؟", options: ["أ) تحقيق الذات من خلال تطوير مفهوم إيجابي عن الذات", "ب) توفير جو نفسي صحي في المدارس لمراعاة الفروق الفردية", "ج) معاقبة السلوك غير المرغوب فيه لتعديله بشكل سريع", "د) الوصول بالفرد إلى السعادة والاستقرار وحل مشكلاته بنفسه"] },
+        { text: "من حيث درجة التخصص بين التوجيه والإرشاد، أي العبارات صحيحة؟", options: ["أ) التوجيه يتطلب درجة تخصص أعلى من الإرشاد", "ب) الإرشاد يتطلب مرشداً نفسياً متخصصاً ومدرباً بكفاءة عالية، بينما التوجيه لا يشترط نفس الدرجة", "ج) كلاهما نفس الدرجة من التخصص", "د) التخصص مطلوب في التوجيه فقط وليس الإرشاد"] },
+        { text: "استخدام اختبار ذكاء ومقاييس شخصية لفهم قدرات المسترشد يستند إلى فرع:", options: ["أ) سيكولوجية الشخصية فقط", "ب) القياس النفسي", "ج) علم النفس التربوي", "د) علم النفس الجنائي"] },
+        { text: "أي الحالات تمثل انتهاكاً صريحاً لمبدأ السرية (مع استثناء حالة الخطر)؟", options: ["أ) مناقشة حالة مسترشد مع مشرف أكاديمي لغرض التدريب", "ب) إفشاء معلومات عن مسترشد لوسائل الإعلام بدون موافقته", "ج) استشارة مرشد أقدم في قضية مهنية مع حجب الاسم", "د) تسجيل جلسة إرشادية للبحث بعد إخفاء الهوية"] },
+        { text: "'الفترات الانتقالية مثل الزواج أو التقاعد' تندرج تحت أي سبب من أسباب الحاجة للإرشاد؟", options: ["أ) التغيرات الأسرية", "ب) التقدم التكنولوجي", "ج) الفترات الحرجة", "د) ارتفاع معدل الأمراض النفسية"] },
+        { text: "أي الخصائص التي اتفقت عليها التعريفات تعني أن 'المرشد هو المخطط للعملية'؟", options: ["أ) وصف المفهوم", "ب) التركيز على العلاقة الإرشادية", "ج) الإرشاد عملية متصلة", "د) تتضمن إجراءات وأنشطة (والمرشد هو من يخطط لها كما أكدته تيلر وباترسون)"] }
+    ];
+
+    // بناء النموذج ديناميكياً مع أزرار التحقق تحت كل سؤال
+    const formContainer = document.getElementById('quizForm');
+    formContainer.innerHTML = ''; // clear placeholder
+
+    for (let i = 0; i < questionsData.length; i++) {
+        const q = questionsData[i];
+        const qNumber = i + 1;
+        const qName = `q${qNumber}`;
+        
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'question-card';
+        cardDiv.setAttribute('data-qid', qNumber);
+        
+        const qNumberDiv = document.createElement('div');
+        qNumberDiv.className = 'q-number';
+        qNumberDiv.textContent = qNumber.toString().padStart(2, '٠').replace(/0/g, '٠').replace(/1/g, '١').replace(/2/g, '٢').replace(/3/g, '٣').replace(/4/g, '٤').replace(/5/g, '٥').replace(/6/g, '٦').replace(/7/g, '٧').replace(/8/g, '٨').replace(/9/g, '٩');
+        // better convert number to arabic indicators but simple is fine
+        qNumberDiv.textContent = qNumber < 10 ? `٠${qNumber}` : qNumber;
+        
+        const questionTextDiv = document.createElement('div');
+        questionTextDiv.className = 'question-text';
+        questionTextDiv.textContent = q.text;
+        
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+        
+        // خيارات
+        const optLetters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((optText, idx) => {
+            const optLetter = optLetters[idx];
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'option';
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = qName;
+            radio.value = optLetter;
+            radio.id = `${qName}_${optLetter}`;
+            const label = document.createElement('label');
+            label.htmlFor = `${qName}_${optLetter}`;
+            label.textContent = optText;
+            optionDiv.appendChild(radio);
+            optionDiv.appendChild(label);
+            optionsDiv.appendChild(optionDiv);
+        });
+        
+        // زر التحقق + حاوية التغذية الراجعة
+        const checkWrapper = document.createElement('div');
+        checkWrapper.className = 'check-btn-wrapper';
+        const checkBtn = document.createElement('button');
+        checkBtn.type = 'button';
+        checkBtn.className = 'check-btn';
+        checkBtn.innerHTML = '🔍 تحقق من الإجابة';
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'indicator-feedback neutral-feedback';
+        feedbackDiv.innerHTML = '⚡ لم يتم التحقق بعد';
+        
+        checkBtn.addEventListener('click', (function(name, fbDiv) {
+            return function() {
+                const selectedRadio = document.querySelector(`input[name="${name}"]:checked`);
+                const correctVal = correctAnswers[name];
+                if (!selectedRadio) {
+                    fbDiv.innerHTML = '⚠️ الرجاء اختيار إجابة أولاً';
+                    fbDiv.className = 'indicator-feedback wrong-feedback';
+                    return;
+                }
+                const userVal = selectedRadio.value;
+                if (userVal === correctVal) {
+                    fbDiv.innerHTML = '✅ إجابة صحيحة! أحسنت.';
+                    fbDiv.className = 'indicator-feedback correct-feedback';
+                } else {
+                    fbDiv.innerHTML = `❌ إجابة خاطئة. الإجابة الصحيحة: ${correctVal}`;
+                    fbDiv.className = 'indicator-feedback wrong-feedback';
+                }
+            };
+        })(qName, feedbackDiv));
+        
+        checkWrapper.appendChild(checkBtn);
+        cardDiv.appendChild(qNumberDiv);
+        cardDiv.appendChild(questionTextDiv);
+        cardDiv.appendChild(optionsDiv);
+        cardDiv.appendChild(checkWrapper);
+        cardDiv.appendChild(feedbackDiv);
+        
+        formContainer.appendChild(cardDiv);
+    }
+    
+    // التصحيح الشامل
+    document.getElementById('submitQuiz').addEventListener('click', function() {
+        let score = 0;
+        let total = Object.keys(correctAnswers).length;
+        let resultHTML = '';
+        
+        for (let i = 1; i <= total; i++) {
+            const qName = 'q' + i;
+            const selected = document.querySelector(`input[name="${qName}"]:checked`);
+            const isCorrect = selected && selected.value === correctAnswers[qName];
+            if (isCorrect) score++;
+            const status = isCorrect ? '✅' : '❌';
+            const correctLetter = correctAnswers[qName];
+            resultHTML += `<div style="margin-bottom:6px;">${status} السؤال ${i} — الصحيح: ${correctLetter}</div>`;
+        }
+        
+        const percent = (score / total) * 100;
+        let feedbackText = '';
+        if (percent >= 85) feedbackText = 'ممتاز! مستوى إتقان عالٍ جداً 🎉';
+        else if (percent >= 70) feedbackText = 'جيد جداً، لكن فيه تفاصيل دقيقة تحتاج تركيز 📘';
+        else if (percent >= 50) feedbackText = 'مستوى متوسط، حاول مراجعة الفروق بين التعريفات والمناهج 🔍';
+        else feedbackText = 'الأسئلة صعبة فعلاً، راجع الفصل الأول مرة أخرى 💪';
+        
+        document.getElementById('scoreDisplay').innerHTML = `${score}/${total}`;
+        document.getElementById('feedbackMsg').innerHTML = feedbackText;
+        document.getElementById('detailedResults').innerHTML = resultHTML;
+        document.getElementById('resultContainer').style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
+</script>
+</body>
+</html>
